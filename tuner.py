@@ -82,12 +82,12 @@ def get_data():
 
 
 def compare(inpitch, desired):
-        if inpitch < desired - tol:
-            print("flat: -{0}Hz".format(desired-inpitch))
-        elif inpitch > desired + tol:
-            print("sharp: +{0}Hz".format(inpitch-desired))
-        else:
-            print("Ok")
+    if inpitch < desired - tol:
+        print("flat: -{0}Hz".format(desired-inpitch))
+    elif inpitch > desired + tol:
+        print("sharp: +{0}Hz".format(inpitch-desired))
+    else:
+        print("Ok")
 
 
 def main():
