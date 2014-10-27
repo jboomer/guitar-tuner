@@ -6,6 +6,7 @@ flat or sharp.
 """
 # TODO: harmonic product spectrum,
 #       hamming window, autocorrelation, class indeling
+#       Threads voor input
 
 
 # import sys
@@ -27,9 +28,9 @@ freqs = {1: 329.63,
          5: 110.00,
          6:  82.41,
          }
-fs = 2000
-N = 512
-tol = 0.5
+fs = 2000  # Sampling frequency
+N = 512    # Chunk size
+tol = 0.5  # Tolerance
 
 recorder = alsaaudio.PCM(alsaaudio.PCM_CAPTURE,
                          alsaaudio.PCM_NORMAL,
@@ -52,19 +53,18 @@ def tune(string, **kwargs):
         tune_fft(string)
 
 
-def tune_fft(string=4):
+def tune_fft(string):
     fc = freqs[string]
 
     while(True):
         y = get_data()
         Y_mag = [abs(x) for x in np.fft.rfft(y)]
-        i_c = int((fc*N)/fs + 1)  # array index of des frequency
+        i_c = int((fc*N)/fs + 1)  # array index of desired frequency
         f_range = np.linspace(0, fs/2,
                               N/2+1)[i_c/2:min(i_c*2, N/2)]
         Y_window = Y_mag[i_c/2:min(i_c*2, N/2)]
         root_index = np.argmax(Y_window)
-        # TODO: HARMONIC PRODUCT SPECTRUM TOEPASSEN
-        # i.e.: FFT downsamplen en vervolgens product of som nemen
+        # TODO: HPS TOEPASSEN
         if Y_window[root_index] > 4 * np.mean(Y_window):
             root = f_range[root_index]
             compare(root, fc)
@@ -72,7 +72,7 @@ def tune_fft(string=4):
             print("no input")
 
 
-def tune_autocorr(string=4):
+def tune_autocorr(string):
     pass
 
 
